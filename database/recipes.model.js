@@ -1,4 +1,4 @@
-cost mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const recipeSchema = new Schema(
@@ -11,3 +11,6 @@ const recipeSchema = new Schema(
     }
 
 )
+
+const Recipes = mongoose.model('Recipes', recipeSchema);
+module.exports = Recipes;
