@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const express = require('express');
 const mongoose = require('mongoose');
 const Recipes = require('../database/recipes.model.js');
+const connection = require('../database/index.js');
 
 app = express();
 const port = 3000;
@@ -21,19 +22,26 @@ app.post('/recipe', function(req, res) {
       'x-rapidapi-key': TOKEN,
       'x-rapidapi-host': 'mycookbook-io1.p.rapidapi.com'
     },
-    data: 'https://www.ambitiouskitchen.com/best-cinnamon-rolls/'
+    data: 'https://www.jamieoliver.com/recipes/vegetables-recipes/superfood-salad/'
     //req.body
   };
 
   axios.request(options).then(function (response) {
-    let data = {
+    let data = new Recipes({
       name: response.data[0].name,
       description: response.data[0].description,
       ingredients: response.data[0].ingredients,
       instructions: response.data[0].instructions[0].steps,
       images: response.data[0].images
-    }
-    res.send(data);
+    });
+    data.save(function (err, recipe) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('saved to collection');
+        res.send(data);
+      }
+    });
   }).catch(function (error) {
     console.error(error);
   });
