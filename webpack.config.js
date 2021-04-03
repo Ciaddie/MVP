@@ -30,7 +30,12 @@ const config = {
         use: [
           'style-loader',
           {
-            loader: 'css-loader',
+            loaders: [
+              {
+                test: /\.css$/,
+                loader: "style-loader!css-loader"
+              },
+            ],
             options: {
               importLoaders: 1,
               modules: true
@@ -42,10 +47,10 @@ const config = {
     ]
   },
   resolve: {
-    extensions: [
-      '.js',
-      '.jsx'
-    ],
+    extensions: ['', '.js', '.jsx', '.css'],
+    modulesDirectories: [
+      node_modules
+    ]
     alias: {
       'react-dom': '@hot-loader/react-dom'
     }
@@ -54,5 +59,14 @@ const config = {
     contentBase: './dist'
   }
 };
+
+// module.exports = {
+//   module: {
+//     loaders: [
+//       { test: /\.css$/, loader: "style-loader!css-loader" },
+//       // ...
+//     ]
+//   }
+// };
 
 module.exports = config;
